@@ -4,6 +4,7 @@ import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { Database } from "./database.types";
 
 function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -27,7 +28,7 @@ export async function createClient() {
     const cookieStore = await cookies();
     const { url, publishableKey } = getSupabaseConfig();
 
-    return createServerClient(url, publishableKey, {
+    return createServerClient<Database>(url, publishableKey, {
         cookies: {
             getAll() {
                 return cookieStore.getAll();
