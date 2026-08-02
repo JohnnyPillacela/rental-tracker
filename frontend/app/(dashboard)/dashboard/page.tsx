@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDashboardData } from "@/features/dashboard/queries";
+import { Button } from "@/components/ui/button";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -38,12 +39,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 </div>
 
                 <form action={signOut}>
-                    <button
+                    <Button
                         className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50"
                         type="submit"
                     >
                         Sign out
-                    </button>
+                    </Button>
                 </form>
             </header>
 
