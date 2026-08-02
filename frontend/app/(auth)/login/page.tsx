@@ -21,7 +21,7 @@ async function signIn(formData: FormData) {
         !email.trim() ||
         !password
     ) {
-        redirect("/?error=missing-fields");
+        redirect("/login?error=missing-fields");
     }
 
     const supabase = await createClient();
@@ -36,7 +36,7 @@ async function signIn(formData: FormData) {
         redirect("/login?error=invalid-credentials");
     }
 
-    redirect("/login");
+    redirect("/dashboard");
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
