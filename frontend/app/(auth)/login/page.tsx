@@ -115,7 +115,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <p className="text-sm text-red-700" role="alert">
                 {error === "missing-fields"
                   ? "Enter your email and password."
-                  : "The email or password is incorrect."}
+                  : error === "invalid-credentials"
+                  ? "The email or password is incorrect."
+                  : error === "unauthorized"
+                  ? "Sign in to access your dashboard."
+                  : "An unknown error occurred."}
               </p>
             ) : null}
 

@@ -14,10 +14,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-        redirect("/login");
+        redirect("/login?error=unauthorized");
     }
 
-    const { error } = await searchParams;
     return (
         <div>
             <h1>Dashboard</h1>
