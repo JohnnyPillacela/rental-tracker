@@ -22,7 +22,10 @@ async function signOut() {
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await supabase.auth
+        .getUser()
+        .then(({ data, error }) => (error ? null : data.user))
+        .catch(() => redirect("/login?error=db-error"));
 
     if (!user) {
         redirect("/login?error=unauthorized");
