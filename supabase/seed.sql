@@ -2,18 +2,74 @@
 --
 -- This user is only a placeholder owner for the seeded rows. It has no
 -- password or identity record, so it cannot sign in through Supabase Auth.
+-- Local-development credentials only:
+--   Email: local-owner@example.com
+--   Password: rental-tracker-local
+
 insert into auth.users (
+  instance_id,
   id,
+  aud,
+  role,
   email,
-  raw_user_meta_data
+  encrypted_password,
+  email_confirmed_at,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  created_at,
+  updated_at,
+  confirmation_token,
+  recovery_token,
+  email_change_token_new,
+  email_change
 )
 values (
+  '00000000-0000-0000-0000-000000000000',
   'd0e3c8f0-1234-5678-9abc-def012345678',
+  'authenticated',
+  'authenticated',
   'local-owner@example.com',
-  '{}'::jsonb
+  crypt('rental-tracker-local', gen_salt('bf')),
+  now(),
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{}'::jsonb,
+  now(),
+  now(),
+  '',
+  '',
+  '',
+  ''
 )
 on conflict (id) do nothing;
 
+insert into auth.identities (
+  provider_id,
+  user_id,
+  identity_data,
+  provider,
+  last_sign_in_at,
+  created_at,
+  updated_at
+)
+values (
+  'd0e3c8f0-1234-5678-9abc-def012345678',
+  'd0e3c8f0-1234-5678-9abc-def012345678',
+  jsonb_build_object(
+    'sub',
+    'd0e3c8f0-1234-5678-9abc-def012345678',
+    'email',
+    'local-owner@example.com',
+    'email_verified',
+    true,
+    'phone_verified',
+    false
+  ),
+  'email',
+  now(),
+  now(),
+  now()
+)
+on conflict (provider_id, provider) do nothing;
 
 do $$
 declare
