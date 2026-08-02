@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getDashboardData } from "@/features/dashboard/queries";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -26,12 +27,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         redirect("/login?error=unauthorized");
     }
 
-    const { count, error: propertyError } = await supabase
-        .from("properties")
-        .select("id", {
-            count: "exact",
-            head: true,
-        });
+    const dashboardData = await getDashboardData();
 
     return (
         <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
@@ -52,22 +48,21 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             </header>
 
             <section className="py-10">
-                <p className="text-sm font-medium text-zinc-500">February 2026</p>
+                <p className="text-sm font-medium text-zinc-500">
+                    February 2026
+                </p>
+
                 <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-                    Dashboard
+                    Dashboard data
                 </h1>
 
-                <div className="mt-8 max-w-sm rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-                    <p className="text-sm text-zinc-600">Properties</p>
+                <p className="mt-2 text-zinc-600">
+                    Raw authenticated data returned by Supabase.
+                </p>
 
-                    {propertyError ? (
-                        <p className="mt-2 text-sm text-red-700">
-                            Property data could not be loaded.
-                        </p>
-                    ) : (
-                        <p className="mt-2 text-3xl font-semibold">{count ?? 0}</p>
-                    )}
-                </div>
+                <pre className="mt-8 overflow-x-auto rounded-xl bg-zinc-950 p-6 text-sm text-zinc-100">
+                    {JSON.stringify(dashboardData, null, 2)}
+                </pre>
             </section>
         </main>
     );
