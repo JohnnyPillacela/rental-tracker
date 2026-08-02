@@ -1,10 +1,22 @@
-import Image from "next/image";
+// page.tsx
 
-export default function Home() {
+import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <Link
+            href={user ? "/dashboard" : "/login"}
+            className="rounded-md bg-zinc-900 px-4 py-2 text-white"
+          >
+            {user ? "Dashboard" : "Sign in"}
+          </Link>
           <h1>
             Rental Tracker
           </h1>
