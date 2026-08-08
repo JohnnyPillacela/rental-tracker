@@ -3,6 +3,7 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
+import { calculateDashboardSummary } from "./summary";
 
 export const DASHBOARD_MONTH = "2026-02-01";
 
@@ -79,8 +80,15 @@ export async function getDashboardData() {
     throw new Error("Dashboard utility bills could not be loaded.");
   }
 
+  const rentRecords = rentResult.data;
+  const utilityBills = utilityResult.data;
+
   return {
     month: DASHBOARD_MONTH,
+    summary: calculateDashboardSummary(
+      rentRecords,
+      utilityBills,
+    ),
     rentRecords: rentResult.data,
     utilityBills: utilityResult.data,
   };
