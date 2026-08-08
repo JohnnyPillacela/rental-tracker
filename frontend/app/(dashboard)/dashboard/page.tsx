@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDashboardData } from "@/features/dashboard/queries";
 import { Button } from "@/components/ui/button";
+import { SummaryCards } from "@/features/dashboard/components/summary-cards";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -64,9 +65,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                     Raw authenticated data returned by Supabase.
                 </p>
 
-                <pre className="mt-8 overflow-x-auto rounded-xl bg-zinc-950 p-6 text-sm text-zinc-100">
-                    {JSON.stringify(dashboardData, null, 2)}
-                </pre>
+                <SummaryCards summary={dashboardData.summary} />
             </section>
         </main>
     );
