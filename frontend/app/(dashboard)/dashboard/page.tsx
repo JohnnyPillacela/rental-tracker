@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDashboardData } from "@/features/dashboard/queries";
 import { Button } from "@/components/ui/button";
 import { SummaryCards } from "@/features/dashboard/components/summary-cards";
+import { RentRecordsTable } from "@/features/dashboard/components/rent-records-table";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -66,6 +67,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 </p>
 
                 <SummaryCards summary={dashboardData.summary} />
+                <RentRecordsTable rentRecords={dashboardData.rentRecords} />
             </section>
         </main>
     );
