@@ -13,16 +13,35 @@ import {
 } from "@/features/dashboard/actions";
 import type { DashboardData } from "@/features/dashboard/queries";
 import type { Database } from "@/lib/supabase/database.types";
+import { Badge } from "@/components/ui/badge";
 
 type RentRecord = DashboardData["rentRecords"][number];
 type RentStatus = Database["public"]["Enums"]["rent_status"];
 
 const STATUS_LABEL: Record<RentStatus, string> = {
-  occupied: "Occupied",
-  vacant: "Vacant",
-  partial_month: "Partial Month",
-  nonpaying: "Non-Paying",
+    occupied: "Occupied",
+    vacant: "Vacant",
+    partial_month: "Partial Month",
+    nonpaying: "Non-Paying",
 };
+
+const STATUS_VARIANT: Record<
+    RentStatus,
+    "default" | "secondary" | "outline" | "destructive"
+> = {
+    occupied: "default",
+    vacant: "secondary",
+    partial_month: "outline",
+    nonpaying: "destructive",
+};
+
+function RentStatusBadge({ status }: { status: RentStatus }) {
+    return (
+        <Badge variant={STATUS_VARIANT[status]}>
+            {STATUS_LABEL[status]}
+        </Badge>
+    );
+}
 
 type RentRecordRowProps = {
   rentRecord: RentRecord;
