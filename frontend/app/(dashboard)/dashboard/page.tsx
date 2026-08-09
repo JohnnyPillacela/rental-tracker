@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { SummaryCards } from "@/features/dashboard/components/summary-cards";
 import { RentRecordsTable } from "@/features/dashboard/components/rent-records-table";
 import { UtilityBillsTable } from "@/features/dashboard/components/utility-bills-table";
+import { formatMonthLabel } from "@/features/dashboard/format";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -56,15 +57,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
             <section className="py-10">
                 <p className="text-sm font-medium text-zinc-500">
-                    February 2026
+                    {formatMonthLabel(dashboardData.month)}
                 </p>
 
                 <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-                    Dashboard data
+                    Monthl Rent and Utility Bills Summary
                 </h1>
 
                 <p className="mt-2 text-zinc-600">
-                    Raw authenticated data returned by Supabase.
+                    Summary of the monthly rent and utility bills for all your properties.
                 </p>
 
                 <SummaryCards summary={dashboardData.summary} />
