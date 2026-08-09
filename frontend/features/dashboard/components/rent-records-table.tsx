@@ -1,43 +1,13 @@
 // features/dashboard/components/rent-records-table.tsx
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { DashboardData } from "@/features/dashboard/queries";
-import { formatCurrency } from "../format";
-import { Database } from "@/lib/supabase/database.types";
-import { Badge } from "@/components/ui/badge";
 import { RentRecordRow } from "./rent-record-row";
 
 type RentRecordsTableProps = {
   rentRecords: DashboardData["rentRecords"];
 };
-
-type RentStatus = Database["public"]["Enums"]["rent_status"];
-
-const STATUS_LABEL: Record<RentStatus, string> = {
-    occupied: "Occupied",
-    vacant: "Vacant",
-    partial_month: "Partial Month",
-    nonpaying: "Non-Paying",
-};
-
-const STATUS_VARIANT: Record<
-    RentStatus,
-    "default" | "secondary" | "outline" | "destructive"
-> = {
-    occupied: "default",
-    vacant: "secondary",
-    partial_month: "outline",
-    nonpaying: "destructive",
-};
-
-function RentStatusBadge({ status }: { status: RentStatus }) {
-    return (
-        <Badge variant={STATUS_VARIANT[status]}>
-            {STATUS_LABEL[status]}
-        </Badge>
-    );
-}
 
 export function RentRecordsTable({ rentRecords }: RentRecordsTableProps) {
     return (
