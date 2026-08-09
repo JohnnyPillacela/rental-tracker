@@ -4,10 +4,11 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { calculateDashboardSummary } from "./summary";
+import { DEFAULT_DASHBOARD_MONTH } from "./month";
 
-export const DASHBOARD_MONTH = "2026-02-01";
-
-export async function getDashboardData() {
+export async function getDashboardData(
+  month: string = DEFAULT_DASHBOARD_MONTH,
+) {
   const supabase = await createClient();
 
   const [rentResult, utilityResult] = await Promise.all([
@@ -35,7 +36,7 @@ export async function getDashboardData() {
           )
         )
       `)
-      .eq("month", DASHBOARD_MONTH)
+      .eq("month", month)
       .order("id"),
 
     supabase
@@ -58,7 +59,7 @@ export async function getDashboardData() {
           )
         )
       `)
-      .eq("month", DASHBOARD_MONTH)
+      .eq("month", month)
       .order("id"),
   ]);
 
@@ -84,7 +85,7 @@ export async function getDashboardData() {
   const utilityBills = utilityResult.data;
 
   return {
-    month: DASHBOARD_MONTH,
+    month: month,
     summary: calculateDashboardSummary(
       rentRecords,
       utilityBills,
