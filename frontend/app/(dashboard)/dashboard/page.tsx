@@ -6,6 +6,7 @@ import { getDashboardData } from "@/features/dashboard/queries";
 import { Button } from "@/components/ui/button";
 import { SummaryCards } from "@/features/dashboard/components/summary-cards";
 import { RentRecordsTable } from "@/features/dashboard/components/rent-records-table";
+import { UtilityBillsTable } from "@/features/dashboard/components/utility-bills-table";
 
 type DashboardPageProps = {
     searchParams: Promise<{
@@ -68,6 +69,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
                 <SummaryCards summary={dashboardData.summary} />
                 <RentRecordsTable rentRecords={dashboardData.rentRecords} />
+                <UtilityBillsTable utilityBills={dashboardData.utilityBills} />
             </section>
         </main>
     );
