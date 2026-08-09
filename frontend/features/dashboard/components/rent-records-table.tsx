@@ -74,7 +74,7 @@ export function RentRecordsTable({ rentRecords }: RentRecordsTableProps) {
                                     <TableCell>{spaceName}</TableCell>
                                     <TableCell>{unitName}</TableCell>
                                     <TableCell>{propertyNickname}</TableCell>
-                                    <TableCell>{status}</TableCell>
+                                    <TableCell><RentStatusBadge status={status} /></TableCell>
                                     <TableCell>{expected}</TableCell>
                                     <TableCell>{collected}</TableCell>
                                     <TableCell>{unpaid}</TableCell>
