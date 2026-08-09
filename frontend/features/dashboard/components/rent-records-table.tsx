@@ -6,6 +6,7 @@ import type { DashboardData } from "@/features/dashboard/queries";
 import { formatCurrency } from "../format";
 import { Database } from "@/lib/supabase/database.types";
 import { Badge } from "@/components/ui/badge";
+import { RentRecordRow } from "./rent-record-row";
 
 type RentRecordsTableProps = {
   rentRecords: DashboardData["rentRecords"];
@@ -56,31 +57,12 @@ export function RentRecordsTable({ rentRecords }: RentRecordsTableProps) {
                             <TableHead>Collected</TableHead>
                             <TableHead>Unpaid</TableHead>
                             <TableHead>Notes</TableHead>
+                            <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {rentRecords.map((rentRecord) => {
-                            const spaceName = rentRecord.rental_space.name;
-                            const unitName = rentRecord.rental_space.unit.name;
-                            const propertyNickname = rentRecord.rental_space.unit.property.nickname;
-                            const status = rentRecord.status;
-                            const expected = formatCurrency(rentRecord.expected_amount);
-                            const collected = formatCurrency(rentRecord.collected_amount);
-                            const unpaid = formatCurrency(Math.max(0, rentRecord.expected_amount - rentRecord.collected_amount));
-                            const notes = rentRecord.notes ?? "";
-
-                            return (
-                                <TableRow key={rentRecord.id}>
-                                    <TableCell>{spaceName}</TableCell>
-                                    <TableCell>{unitName}</TableCell>
-                                    <TableCell>{propertyNickname}</TableCell>
-                                    <TableCell><RentStatusBadge status={status} /></TableCell>
-                                    <TableCell>{expected}</TableCell>
-                                    <TableCell>{collected}</TableCell>
-                                    <TableCell>{unpaid}</TableCell>
-                                    <TableCell>{notes}</TableCell>
-                                </TableRow>
-                            );
+                            return <RentRecordRow key={rentRecord.id} rentRecord={rentRecord} />;
                         })}
                     </TableBody>
                 </Table>
