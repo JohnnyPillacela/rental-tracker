@@ -1,8 +1,6 @@
 // features/dashboard/summary.ts
 
-import type { Database } from "@/lib/supabase/database.types";
-
-type RentStatus = Database["public"]["Enums"]["rent_status"];
+import type { RentStatus } from "@/features/dashboard/rent-status";
 
 type RentAmountRecord = {
   expected_amount: number;
