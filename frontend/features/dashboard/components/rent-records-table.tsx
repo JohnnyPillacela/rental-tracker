@@ -19,6 +19,7 @@ export function RentRecordsTable({ rentRecords }: RentRecordsTableProps) {
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead>Actions</TableHead>
                             <TableHead>Rental Space</TableHead>
                             <TableHead>Unit</TableHead>
                             <TableHead>Property</TableHead>
@@ -27,7 +28,6 @@ export function RentRecordsTable({ rentRecords }: RentRecordsTableProps) {
                             <TableHead>Collected</TableHead>
                             <TableHead>Unpaid</TableHead>
                             <TableHead>Notes</TableHead>
-                            <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
