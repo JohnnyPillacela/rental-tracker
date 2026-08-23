@@ -74,6 +74,7 @@ export function RentRecordEditSheet({ rentRecord }: RentRecordEditSheetProps) {
           <div className="flex w-full items-center justify-left gap-4">
             <Label htmlFor={`status-${rentRecord.id}`}>Status</Label>
             <select
+              key={`${rentRecord.id}-${rentRecord.status}`}
               id={`status-${rentRecord.id}`}
               name="status"
               defaultValue={rentRecord.status}
@@ -93,6 +94,7 @@ export function RentRecordEditSheet({ rentRecord }: RentRecordEditSheetProps) {
               Collected amount
             </Label>
             <Input
+              key={`${rentRecord.id}-${rentRecord.collected_amount}`}
               id={`collected-${rentRecord.id}`}
               name="collected_amount"
               type="number"
