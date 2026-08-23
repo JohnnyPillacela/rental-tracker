@@ -22,18 +22,19 @@ const METRICS: {
   { key: "tenantOverdue", label: "Tenant overdue" },
   { key: "vacancyLoss", label: "Vacancy loss" },
   { key: "utilityExpenses", label: "Utility expenses" },
+  { key: "mortgagePayment", label: "Mortgage" },
 ];
 
 export function SummaryCards({ summary }: SummaryCardsProps) {
   return (
-    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
       {METRICS.map(({ key, label }) => (
-        <Card key={key} size="sm">
+        <Card key={key} size="sm" className="p-2 text-left">
           <CardHeader>
             <CardTitle className="text-zinc-500">{label}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <p className="text-xl font-semibold tracking-tight text-zinc-900">
               {formatCurrency(summary[key])}
             </p>
           </CardContent>

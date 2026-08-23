@@ -11,7 +11,7 @@ export async function getDashboardData(
 ) {
   const supabase = await createClient();
 
-  const [rentResult, utilityResult] = await Promise.all([
+  const [rentResult, utilityResult, mortgageResult] = await Promise.all([
     supabase
       .from("monthly_rent_records")
       .select(`
@@ -61,7 +61,31 @@ export async function getDashboardData(
       `)
       .eq("month", month)
       .order("id"),
+
+    supabase
+      .from("mortgage_periods")
+      .select(`
+      id,
+      start_month,
+      end_month,
+      scheduled_payment,
+      name,
+      lender,
+      property:properties!inner (
+        id,
+        nickname
+      )
+    `)
+      .order("start_month"),
   ]);
+
+  if (mortgageResult.error) {
+    console.error(
+      "Failed to load dashboard mortgage periods:",
+      mortgageResult.error.message,
+    );
+    throw new Error("Dashboard mortgage periods could not be loaded.");
+  }
 
   if (rentResult.error) {
     console.error(
@@ -83,12 +107,15 @@ export async function getDashboardData(
 
   const rentRecords = rentResult.data;
   const utilityBills = utilityResult.data;
+  const mortgagePeriods = mortgageResult.data;
 
   return {
     month: month,
     summary: calculateDashboardSummary(
       rentRecords,
       utilityBills,
+      mortgagePeriods,
+      month,
     ),
     rentRecords: rentResult.data,
     utilityBills: utilityResult.data,
