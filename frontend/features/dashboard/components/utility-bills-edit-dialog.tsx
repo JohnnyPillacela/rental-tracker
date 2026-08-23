@@ -70,6 +70,7 @@ export function UtilityBillsEditDialog({
                   {account.property.nickname}
                 </Label>
                 <Input
+                  key={`${bill.id}-${bill.amount}`}
                   id={`amount-${bill.id}`}
                   name={`amount_${bill.id}`}
                   type="number"
