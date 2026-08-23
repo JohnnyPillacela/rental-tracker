@@ -1,8 +1,9 @@
 // features/dashboard/components/utility-bills-table.tsx
-import { Card, CardTitle, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardTitle, CardContent, CardHeader, CardAction } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/features/dashboard/format";
 import type { DashboardData } from "@/features/dashboard/queries";
+import { UtilityBillsEditDialog } from "./utility-bills-edit-dialog";
 
 type UtilityBillsTableProps = {
     utilityBills: DashboardData["utilityBills"];
@@ -13,6 +14,11 @@ export function UtilityBillsTable({ utilityBills }: UtilityBillsTableProps) {
         <Card className="mt-8">
             <CardHeader>
                 <CardTitle>Utility Bills</CardTitle>
+                {utilityBills.length > 0 ? (
+                    <CardAction>
+                        <UtilityBillsEditDialog utilityBills={utilityBills} />
+                    </CardAction>
+                ) : null}
             </CardHeader>
             <CardContent>
                 <Table>
@@ -26,8 +32,7 @@ export function UtilityBillsTable({ utilityBills }: UtilityBillsTableProps) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {utilityBills.map((bill) => 
-                        {
+                        {utilityBills.map((bill) => {
                             const account = bill.utility_account;
                             const accountName = account.name;
                             const categoryName = account.utility_category.display_name;
