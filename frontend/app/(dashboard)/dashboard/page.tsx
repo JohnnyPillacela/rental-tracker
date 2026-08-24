@@ -39,6 +39,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     }
 
     const params = await searchParams;
+    // TODO(property-month): Read property from the route (properties/1/month)
+    // and pass it into getDashboardData. Month-only is portfolio-wide.
     const month = normalizeMonthParam(params.month);
     const dashboardData = await getDashboardData(month);
 

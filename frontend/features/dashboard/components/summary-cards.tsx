@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { DashboardSummary } from "@/features/dashboard/summary";
-import { formatCurrency } from "@/features/dashboard/format";
+import { formatCurrency, formatInterestRate } from "@/features/dashboard/format";
 
 type SummaryCardsProps = {
   summary: DashboardSummary;
@@ -23,11 +23,12 @@ const METRICS: {
   { key: "vacancyLoss", label: "Vacancy loss" },
   { key: "utilityExpenses", label: "Utility expenses" },
   { key: "mortgagePayment", label: "Mortgage" },
+  { key: "interestRate", label: "Interest rate" },
 ];
 
 export function SummaryCards({ summary }: SummaryCardsProps) {
   return (
-    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-7">
       {METRICS.map(({ key, label }) => (
         <Card key={key} size="sm" className="p-2 text-left">
           <CardHeader>
@@ -35,7 +36,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
           </CardHeader>
           <CardContent>
             <p className="text-xl font-semibold tracking-tight text-zinc-900">
-              {formatCurrency(summary[key])}
+              {key === "interestRate" ? formatInterestRate(summary[key]) : formatCurrency(summary[key])}
             </p>
           </CardContent>
         </Card>

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { calculateDashboardSummary } from "./summary";
 import { DEFAULT_DASHBOARD_MONTH } from "./month";
 
+// TODO(property-month): Accept propertyId and scope all three queries to that property.
 export async function getDashboardData(
   month: string = DEFAULT_DASHBOARD_MONTH,
 ) {
@@ -71,6 +72,7 @@ export async function getDashboardData(
       scheduled_payment,
       name,
       lender,
+      interest_rate,
       property:properties!inner (
         id,
         nickname

@@ -14,3 +14,8 @@ export function formatCurrency(amount: number): string {
 export function formatMonthLabel(month: string): string {
   return format(parseISO(month), "MMMM yyyy");
 }
+
+export function formatInterestRate(interestRate: number | null): string {
+  if (interestRate === null) return "—";
+  return `${interestRate}%`;
+}
