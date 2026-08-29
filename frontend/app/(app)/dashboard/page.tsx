@@ -40,7 +40,7 @@ export default async function DashboardPage() {
     }
 
     return (
-        <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
+        <div className="mx-auto w-full max-w-5xl px-6 py-10">
 
             <div className="flex items-center justify-between border-b border-zinc-200 pb-6">
                 <div>
@@ -77,6 +77,6 @@ export default async function DashboardPage() {
                     ))}
                 </div>
             </section>
-        </main>
+        </div>
     );
 }
