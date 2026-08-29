@@ -18,10 +18,10 @@ import {
 import {
   updateRentRecord,
   type UpdateRentRecordState,
-} from "@/features/dashboard/actions";
-import { formatCurrency } from "@/features/dashboard/format";
-import { RENT_STATUSES, STATUS_LABEL } from "@/features/dashboard/rent-status";
-import type { DashboardData } from "@/features/dashboard/queries";
+} from "@/features/properties/actions";
+import { formatCurrency } from "@/features/properties/format";
+import { RENT_STATUSES, STATUS_LABEL } from "@/features/properties/rent-status";
+import type { DashboardData } from "@/features/properties/queries";
 
 type RentRecord = DashboardData["rentRecords"][number];
 

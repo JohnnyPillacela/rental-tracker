@@ -1,6 +1,6 @@
-// features/dashboard/summary.ts
+// features/properties/summary.ts
 
-import type { RentStatus } from "@/features/dashboard/rent-status";
+import type { RentStatus } from "@/features/properties/rent-status";
 
 type RentAmountRecord = {
   expected_amount: number;
@@ -42,8 +42,6 @@ function isMortgagePeriodActive(
   return true;
 }
 
-// TODO(property-month): Property-scoped views (e.g. properties/1/month)
-// should call this with the route propertyId. Do not flatten all properties.
 export function getMortgageForProperty(
   mortgagePeriods: MortgagePeriodRecord[],
   month: string,
@@ -64,6 +62,31 @@ export function getMortgageForProperty(
   };
 }
 
+function portfolioMortgage(
+  mortgagePeriods: MortgagePeriodRecord[],
+  month: string,
+): { scheduledPayment: number; interestRate: number | null } {
+  const propertyIds = [
+    ...new Set(mortgagePeriods.map((period) => period.property.id)),
+  ];
+
+  const mortgagesByProperty = propertyIds.map((id) =>
+    getMortgageForProperty(mortgagePeriods, month, id),
+  );
+
+  return {
+    scheduledPayment: mortgagesByProperty.reduce(
+      (total, mortgage) => total + mortgage.scheduledPayment,
+      0,
+    ),
+    interestRate: uniqueInterestRate(
+      mortgagesByProperty.map((mortgage) => ({
+        interest_rate: mortgage.interestRate,
+      })),
+    ),
+  };
+}
+
 function uniqueInterestRate(
   periods: Pick<MortgagePeriodRecord, "interest_rate">[],
 ): number | null {
@@ -80,6 +103,7 @@ export function calculateDashboardSummary(
   utilityBills: UtilityAmountRecord[],
   mortgagePeriods: MortgagePeriodRecord[],
   month: string,
+  propertyId?: number,
 ): DashboardSummary {
   const expectedRent = rentRecords.reduce(
     (total, record) => total + record.expected_amount,
@@ -120,26 +144,13 @@ export function calculateDashboardSummary(
     0,
   );
 
-  // TODO(property-month): Portfolio rollup. Mixed property rates → null.
-  // For a single property, skip this map and use getMortgageForProperty(..., propertyId).
-  const propertyIds = [
-    ...new Set(mortgagePeriods.map((period) => period.property.id)),
-  ];
+  const mortgage =
+    propertyId !== undefined
+      ? getMortgageForProperty(mortgagePeriods, month, propertyId)
+      : portfolioMortgage(mortgagePeriods, month);
 
-  const mortgagesByProperty = propertyIds.map((propertyId) =>
-    getMortgageForProperty(mortgagePeriods, month, propertyId),
-  );
-
-  const mortgagePayment = mortgagesByProperty.reduce(
-    (total, mortgage) => total + mortgage.scheduledPayment,
-    0,
-  );
-
-  const interestRate = uniqueInterestRate(
-    mortgagesByProperty.map((mortgage) => ({
-      interest_rate: mortgage.interestRate,
-    })),
-  );
+  const mortgagePayment = mortgage.scheduledPayment;
+  const interestRate = mortgage.interestRate;
 
   return {
     expectedRent,

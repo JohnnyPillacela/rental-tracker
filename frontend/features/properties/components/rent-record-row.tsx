@@ -1,10 +1,10 @@
 // features/dashboard/components/rent-record-row.tsx
 
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatCurrency } from "@/features/dashboard/format";
-import type { DashboardData } from "@/features/dashboard/queries";
+import { formatCurrency } from "@/features/properties/format";
+import type { DashboardData } from "@/features/properties/queries";
 import { Badge } from "@/components/ui/badge";
-import { STATUS_LABEL, STATUS_VARIANT, RentStatus } from "@/features/dashboard/rent-status";
+import { STATUS_LABEL, STATUS_VARIANT, RentStatus } from "@/features/properties/rent-status";
 import { RentRecordEditSheet } from "./rent-record-edit-sheet";
 
 type RentRecord = DashboardData["rentRecords"][number];

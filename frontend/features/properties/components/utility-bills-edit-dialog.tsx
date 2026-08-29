@@ -18,8 +18,8 @@ import {
 import {
   updateUtilityBills,
   type UpdateUtilityBillState,
-} from "@/features/dashboard/actions";
-import type { DashboardData } from "@/features/dashboard/queries";
+} from "@/features/properties/actions";
+import type { DashboardData } from "@/features/properties/queries";
 
 type UtilityBill = DashboardData["utilityBills"][number];
 

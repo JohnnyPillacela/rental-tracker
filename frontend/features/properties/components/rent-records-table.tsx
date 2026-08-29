@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { DashboardData } from "@/features/dashboard/queries";
+import type { DashboardData } from "@/features/properties/queries";
 import { RentRecordRow } from "./rent-record-row";
 
 type RentRecordsTableProps = {

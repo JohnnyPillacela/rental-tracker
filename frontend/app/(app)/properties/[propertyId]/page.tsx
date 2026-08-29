@@ -1,17 +1,20 @@
-// dashboard/page.tsx
+// app/(app)/properties/[propertyId]/page.tsx
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getDashboardData } from "@/features/dashboard/queries";
+import { getDashboardData } from "@/features/properties/queries";
 import { Button } from "@/components/ui/button";
-import { SummaryCards } from "@/features/dashboard/components/summary-cards";
-import { RentRecordsTable } from "@/features/dashboard/components/rent-records-table";
-import { UtilityBillsTable } from "@/features/dashboard/components/utility-bills-table";
-import { formatMonthLabel } from "@/features/dashboard/format";
-import { normalizeMonthParam } from "@/features/dashboard/month";
-import { MonthNav } from "@/features/dashboard/components/month-nav";
+import { SummaryCards } from "@/features/properties/components/summary-cards";
+import { RentRecordsTable } from "@/features/properties/components/rent-records-table";
+import { UtilityBillsTable } from "@/features/properties/components/utility-bills-table";
+import { formatMonthLabel } from "@/features/properties/format";
+import { normalizeMonthParam } from "@/features/properties/month";
+import { MonthNav } from "@/features/properties/components/month-nav";
 
-type DashboardPageProps = {
+type PropertyPageProps = {
+    params: Promise<{
+        propertyId: string;
+    }>;
     searchParams: Promise<{
         error?: string;
         month?: string;
@@ -27,7 +30,10 @@ async function signOut() {
     redirect("/");
 }
 
-export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+export default async function PropertyPage({
+    params,
+    searchParams,
+}: PropertyPageProps) {
     const supabase = await createClient();
     const user = await supabase.auth
         .getUser()
@@ -38,11 +44,20 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         redirect("/login?error=unauthorized");
     }
 
-    const params = await searchParams;
-    // TODO(property-month): Read property from the route (properties/1/month)
-    // and pass it into getDashboardData. Month-only is portfolio-wide.
-    const month = normalizeMonthParam(params.month);
-    const dashboardData = await getDashboardData(month);
+    const { propertyId: propertyIdParam } = await params;
+    const propertyId = Number(propertyIdParam);
+
+    if (!Number.isInteger(propertyId) || propertyId <= 0) {
+        notFound();
+    }
+
+    const query = await searchParams;
+    const month = normalizeMonthParam(query.month);
+    const dashboardData = await getDashboardData(month, propertyId);
+
+    if (!dashboardData) {
+        notFound();
+    }
 
     const isEmpty =
         dashboardData.rentRecords.length === 0 &&
@@ -71,14 +86,17 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                     <p className="text-sm font-medium text-zinc-500">
                         {formatMonthLabel(dashboardData.month)}
                     </p>
-                    <MonthNav month={dashboardData.month} />
+                    <MonthNav
+                        month={dashboardData.month}
+                        propertyId={propertyId}
+                    />
                 </div>
                 <h1 className="mt-1 text-3xl font-semibold tracking-tight">
                     Monthl Rent and Utility Bills Summary
                 </h1>
 
                 <p className="mt-2 text-zinc-600">
-                    Summary of the monthly rent and utility bills for all your properties.
+                    Summary of the monthly rent and utility bills for this property.
                 </p>
 
                 <SummaryCards summary={dashboardData.summary} />

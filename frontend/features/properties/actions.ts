@@ -1,4 +1,4 @@
-// features/dashboard/actions.ts
+// features/properties/actions.ts
 
 "use server";
 
@@ -77,7 +77,7 @@ export async function updateRentRecord(
         return { ok: false, error: "Could not save rent record." };
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath("/properties/[propertyId]", "page");
     return { ok: true };
 }
 
@@ -143,6 +143,6 @@ export async function updateUtilityBills(
         }
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath("/properties/[propertyId]", "page");
     return { ok: true };
 }

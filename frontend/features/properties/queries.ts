@@ -1,4 +1,4 @@
-// features/dashboard/queries.ts
+// features/properties/queries.ts
 
 import "server-only";
 
@@ -6,16 +6,35 @@ import { createClient } from "@/lib/supabase/server";
 import { calculateDashboardSummary } from "./summary";
 import { DEFAULT_DASHBOARD_MONTH } from "./month";
 
-// TODO(property-month): Accept propertyId and scope all three queries to that property.
 export async function getDashboardData(
   month: string = DEFAULT_DASHBOARD_MONTH,
+  propertyId?: number,
 ) {
   const supabase = await createClient();
 
-  const [rentResult, utilityResult, mortgageResult] = await Promise.all([
-    supabase
-      .from("monthly_rent_records")
-      .select(`
+  if (propertyId !== undefined) {
+    const { data: property, error: propertyError } = await supabase
+      .from("properties")
+      .select("id")
+      .eq("id", propertyId)
+      .maybeSingle();
+
+    if (propertyError) {
+      console.error(
+        "Failed to load property:",
+        propertyError.message,
+      );
+      throw new Error("Property could not be loaded.");
+    }
+
+    if (!property) {
+      return null;
+    }
+  }
+
+  let rentQuery = supabase
+    .from("monthly_rent_records")
+    .select(`
         id,
         month,
         expected_amount,
@@ -37,12 +56,12 @@ export async function getDashboardData(
           )
         )
       `)
-      .eq("month", month)
-      .order("id"),
+    .eq("month", month)
+    .order("id");
 
-    supabase
-      .from("monthly_utility_bills")
-      .select(`
+  let utilityQuery = supabase
+    .from("monthly_utility_bills")
+    .select(`
         id,
         month,
         amount,
@@ -60,12 +79,12 @@ export async function getDashboardData(
           )
         )
       `)
-      .eq("month", month)
-      .order("id"),
+    .eq("month", month)
+    .order("id");
 
-    supabase
-      .from("mortgage_periods")
-      .select(`
+  let mortgageQuery = supabase
+    .from("mortgage_periods")
+    .select(`
       id,
       start_month,
       end_month,
@@ -78,7 +97,18 @@ export async function getDashboardData(
         nickname
       )
     `)
-      .order("start_month"),
+    .order("start_month");
+
+  if (propertyId !== undefined) {
+    rentQuery = rentQuery.eq("rental_space.unit.property.id", propertyId);
+    utilityQuery = utilityQuery.eq("utility_account.property.id", propertyId);
+    mortgageQuery = mortgageQuery.eq("property_id", propertyId);
+  }
+
+  const [rentResult, utilityResult, mortgageResult] = await Promise.all([
+    rentQuery,
+    utilityQuery,
+    mortgageQuery,
   ]);
 
   if (mortgageResult.error) {
@@ -118,12 +148,13 @@ export async function getDashboardData(
       utilityBills,
       mortgagePeriods,
       month,
+      propertyId,
     ),
     rentRecords: rentResult.data,
     utilityBills: utilityResult.data,
   };
 }
 
-export type DashboardData = Awaited<
-  ReturnType<typeof getDashboardData>
+export type DashboardData = NonNullable<
+  Awaited<ReturnType<typeof getDashboardData>>
 >;

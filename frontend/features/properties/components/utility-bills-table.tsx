@@ -1,8 +1,8 @@
 // features/dashboard/components/utility-bills-table.tsx
 import { Card, CardTitle, CardContent, CardHeader, CardAction } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatCurrency } from "@/features/dashboard/format";
-import type { DashboardData } from "@/features/dashboard/queries";
+import { formatCurrency } from "@/features/properties/format";
+import type { DashboardData } from "@/features/properties/queries";
 import { UtilityBillsEditDialog } from "./utility-bills-edit-dialog";
 
 type UtilityBillsTableProps = {

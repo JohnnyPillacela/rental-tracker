@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { DashboardSummary } from "@/features/dashboard/summary";
-import { formatCurrency, formatInterestRate } from "@/features/dashboard/format";
+import type { DashboardSummary } from "@/features/properties/summary";
+import { formatCurrency, formatInterestRate } from "@/features/properties/format";
 
 type SummaryCardsProps = {
   summary: DashboardSummary;
