@@ -1,4 +1,4 @@
-// features/dashboard/components/rent-record-row.tsx
+// features/properties/components/rent-record-row.tsx
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/features/properties/format";

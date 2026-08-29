@@ -1,4 +1,4 @@
-// features/dashboard/components/rent-record-edit-sheet.tsx
+// features/properties/components/rent-record-edit-sheet.tsx
 
 "use client";
 

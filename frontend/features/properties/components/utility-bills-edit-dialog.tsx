@@ -1,4 +1,4 @@
-// features/dashboard/components/utility-bills-edit-dialog.tsx
+// features/properties/components/utility-bills-edit-dialog.tsx
 
 "use client";
 

@@ -1,4 +1,4 @@
-// features/dashboard/components/utility-bills-table.tsx
+// features/properties/components/utility-bills-table.tsx
 import { Card, CardTitle, CardContent, CardHeader, CardAction } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/features/properties/format";

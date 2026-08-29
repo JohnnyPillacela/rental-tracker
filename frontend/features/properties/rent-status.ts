@@ -1,4 +1,4 @@
-// features/dashboard/rent-status.ts
+// features/properties/rent-status.ts
 
 import type { Database } from "@/lib/supabase/database.types";
 

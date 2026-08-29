@@ -1,4 +1,4 @@
-// features/dashboard/components/rent-records-table.tsx
+// features/properties/components/rent-records-table.tsx
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";

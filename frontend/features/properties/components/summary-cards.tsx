@@ -1,4 +1,4 @@
-// features/dashboard/components/summary-cards.tsx
+// features/properties/components/summary-cards.tsx
 
 import {
   Card,

@@ -1,4 +1,4 @@
-// features/dashboard/month.ts
+// features/properties/month.ts
 
 import { addMonths, format, isValid, parse } from "date-fns";
 

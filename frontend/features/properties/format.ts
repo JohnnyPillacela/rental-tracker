@@ -1,4 +1,4 @@
-// features/dashboard/format.ts
+// features/properties/format.ts
 
 import { format, parseISO } from "date-fns";
 
