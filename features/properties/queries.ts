@@ -5,6 +5,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { calculateDashboardSummary } from "./summary";
 import { DEFAULT_DASHBOARD_MONTH } from "./month";
+import { cache } from "react";
 
 export async function getDashboardData(
   month: string = DEFAULT_DASHBOARD_MONTH,
@@ -158,3 +159,21 @@ export async function getDashboardData(
 export type DashboardData = NonNullable<
   Awaited<ReturnType<typeof getDashboardData>>
 >;
+
+export const getProperties = cache(async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("properties")
+    .select("id, nickname, street_address, city, state, zip_code, status")
+    .order("nickname");
+
+  if (error) {
+    console.error("Failed to load properties:", error.message);
+    throw new Error("Properties could not be loaded.");
+  }
+
+  return data;
+});
+
+export type PropertyListItem = Awaited<ReturnType<typeof getProperties>>[number];

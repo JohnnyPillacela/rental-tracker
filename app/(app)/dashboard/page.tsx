@@ -10,14 +10,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { getProperties, PropertyListItem } from "@/features/properties/queries";
 
-const PLACEHOLDER_PROPERTIES = [
-    {
-        id: 1,
-        nickname: "Sample Three-Family",
-        address: "123 Example Street, Brooklyn, NY",
-    },
-];
+const properties = await getProperties()
 
 async function signOut() {
     "use server";
@@ -65,16 +60,25 @@ export default async function DashboardPage() {
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                    {PLACEHOLDER_PROPERTIES.map((property) => (
-                        <Link key={property.id} href={`/properties/${property.id}`}>
-                            <Card className="hover:bg-zinc-50">
-                                <CardHeader>
-                                    <CardTitle>{property.nickname}</CardTitle>
-                                    <CardDescription>{property.address}</CardDescription>
-                                </CardHeader>
-                            </Card>
-                        </Link>
-                    ))}
+                    {properties.length === 0 ? (
+                        <p className="mt-8 text-zinc-600">No properties yet.</p>
+                    ) : (
+                        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                            {properties.map((property) => (
+                                <Link key={property.id} href={`/properties/${property.id}`}>
+                                    <Card className="hover:bg-zinc-50">
+                                        <CardHeader>
+                                            <CardTitle>{property.nickname}</CardTitle>
+                                            <CardDescription>
+                                                {property.street_address}, {property.city}, {property.state}{" "}
+                                                {property.zip_code}
+                                            </CardDescription>
+                                        </CardHeader>
+                                    </Card>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
         </div>

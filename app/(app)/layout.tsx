@@ -9,11 +9,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/features/shell/app-sidebar";
-
-
-const PLACEHOLDER_PROPERTIES = [
-    { id: 1, nickname: "Sample Three-Family" },
-];
+import { getProperties, PropertyListItem } from "@/features/properties/queries";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
     const supabase = await createClient();
@@ -26,11 +22,13 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         redirect("/login?error=unauthorized");
     }
 
+    const properties = await getProperties();
+
     return (
         <SidebarProvider>
             <AppSidebar
                 email={user.email ?? ""}
-                properties={PLACEHOLDER_PROPERTIES}
+                properties={properties}
             />
             <SidebarInset>
                 <header className="flex h-12 items-center border-b px-4 md:hidden">
