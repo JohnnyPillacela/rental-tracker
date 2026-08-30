@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
+import { PRODUCT_NAME } from "@/lib/brand";
 
 const lato = Lato({
   variable: "--font-lato",
@@ -15,8 +16,9 @@ const sourceCode = Source_Code_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Rental Tracker",
-  description: "Web app to track rental properties",
+  title: PRODUCT_NAME,
+  description:
+    "See which units paid this month — rent and utilities across every property.",
 };
 
 export default function RootLayout({

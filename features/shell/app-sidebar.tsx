@@ -19,6 +19,7 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { signOut } from "@/features/shell/actions";
+import { PRODUCT_NAME } from "@/lib/brand";
 
 type AppSidebarProps = {
     email: string;
@@ -34,7 +35,7 @@ export function AppSidebar({ email, properties }: AppSidebarProps) {
     return (
         <Sidebar>
             <SidebarHeader>
-                <p className="px-2 text-lg font-medium">Rental Tracker</p>
+                <p className="px-2 text-lg font-medium">{PRODUCT_NAME}</p>
             </SidebarHeader>
 
             <SidebarContent>
