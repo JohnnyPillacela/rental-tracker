@@ -77,16 +77,21 @@ declare
     'd0e3c8f0-1234-5678-9abc-def012345678';
 
   v_property_id bigint;
+  v_duplex_id bigint;
 
   v_second_floor_id bigint;
   v_third_floor_id bigint;
   v_basement_id bigint;
+  v_apt1_id bigint;
+  v_apt2_id bigint;
 
   v_second_floor_space_id bigint;
   v_third_floor_whole_id bigint;
   v_third_floor_room_a_id bigint;
   v_third_floor_room_b_id bigint;
   v_basement_space_id bigint;
+  v_apt1_space_id bigint;
+  v_apt2_space_id bigint;
 
   v_water_category_id smallint;
   v_electric_category_id smallint;
@@ -94,6 +99,9 @@ declare
   v_water_account_id bigint;
   v_second_floor_electric_id bigint;
   v_third_basement_electric_id bigint;
+  v_duplex_water_id bigint;
+  v_apt1_electric_id bigint;
+  v_apt2_electric_id bigint;
 begin
   -- One physical property.
   insert into public.properties (
@@ -448,5 +456,219 @@ begin
       2500.00,
       'Scheduled payment after the temporary reduction ends.'
     );
+
+  -- Newark duplex with two whole-unit apartments.
+  insert into public.properties (
+    user_id,
+    nickname,
+    street_address,
+    city,
+    state,
+    zip_code,
+    purchase_price,
+    status
+  )
+  values (
+    v_user_id,
+    'Newark Duplex',
+    '412 South 10th Street',
+    'Newark',
+    'NJ',
+    '07103',
+    425000.00,
+    'active'
+  )
+  returning id into v_duplex_id;
+
+  insert into public.units (
+    property_id,
+    name,
+    display_order
+  )
+  values (
+    v_duplex_id,
+    'Apt 1',
+    10
+  )
+  returning id into v_apt1_id;
+
+  insert into public.units (
+    property_id,
+    name,
+    display_order
+  )
+  values (
+    v_duplex_id,
+    'Apt 2',
+    20
+  )
+  returning id into v_apt2_id;
+
+  insert into public.rental_spaces (
+    unit_id,
+    name,
+    space_type,
+    start_month
+  )
+  values (
+    v_apt1_id,
+    'Apt 1 - Whole Apartment',
+    'whole_unit',
+    '2025-01-01'
+  )
+  returning id into v_apt1_space_id;
+
+  insert into public.rental_spaces (
+    unit_id,
+    name,
+    space_type,
+    start_month
+  )
+  values (
+    v_apt2_id,
+    'Apt 2 - Whole Apartment',
+    'whole_unit',
+    '2025-01-01'
+  )
+  returning id into v_apt2_space_id;
+
+  insert into public.monthly_rent_records (
+    rental_space_id,
+    month,
+    expected_amount,
+    collected_amount,
+    status,
+    notes
+  )
+  values
+    (
+      v_apt1_space_id,
+      '2026-02-01',
+      1800.00,
+      1800.00,
+      'occupied',
+      null
+    ),
+    (
+      v_apt2_space_id,
+      '2026-02-01',
+      1750.00,
+      1750.00,
+      'occupied',
+      null
+    );
+
+  insert into public.utility_accounts (
+    property_id,
+    utility_category_id,
+    name,
+    start_month,
+    notes
+  )
+  values (
+    v_duplex_id,
+    v_water_category_id,
+    'Water - Main House Account',
+    '2025-01-01',
+    'One owner-paid water account covers the entire duplex.'
+  )
+  returning id into v_duplex_water_id;
+
+  insert into public.utility_accounts (
+    property_id,
+    utility_category_id,
+    name,
+    start_month
+  )
+  values (
+    v_duplex_id,
+    v_electric_category_id,
+    'Electric - Apt 1',
+    '2025-01-01'
+  )
+  returning id into v_apt1_electric_id;
+
+  insert into public.utility_account_units (
+    utility_account_id,
+    unit_id,
+    property_id
+  )
+  values (
+    v_apt1_electric_id,
+    v_apt1_id,
+    v_duplex_id
+  );
+
+  insert into public.utility_accounts (
+    property_id,
+    utility_category_id,
+    name,
+    start_month
+  )
+  values (
+    v_duplex_id,
+    v_electric_category_id,
+    'Electric - Apt 2',
+    '2025-01-01'
+  )
+  returning id into v_apt2_electric_id;
+
+  insert into public.utility_account_units (
+    utility_account_id,
+    unit_id,
+    property_id
+  )
+  values (
+    v_apt2_electric_id,
+    v_apt2_id,
+    v_duplex_id
+  );
+
+  insert into public.monthly_utility_bills (
+    utility_account_id,
+    month,
+    amount,
+    notes
+  )
+  values
+    (
+      v_duplex_water_id,
+      '2026-02-01',
+      96.20,
+      'Whole-property water bill.'
+    ),
+    (
+      v_apt1_electric_id,
+      '2026-02-01',
+      87.45,
+      null
+    ),
+    (
+      v_apt2_electric_id,
+      '2026-02-01',
+      91.10,
+      null
+    );
+
+  insert into public.mortgage_periods (
+    property_id,
+    name,
+    lender,
+    start_month,
+    end_month,
+    interest_rate,
+    scheduled_payment,
+    notes
+  )
+  values (
+    v_duplex_id,
+    'Original purchase loan',
+    'Wells Fargo',
+    '2025-01-01',
+    null,
+    6.5000,
+    2150.00,
+    'Scheduled payment on the original purchase mortgage.'
+  );
 end;
 $$;
