@@ -64,24 +64,9 @@ export default async function PropertyPage({
         dashboardData.utilityBills.length === 0;
 
     return (
-        <div className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
-            <header className="flex items-center justify-between border-b border-zinc-200 pb-6">
-                <div>
-                    <p className="text-sm text-zinc-500">Signed in as</p>
-                    <p className="font-medium">{user.email}</p>
-                </div>
+        <div className="mx-auto min-h-screen w-full min-w-0 max-w-5xl px-6 py-10">
 
-                <form action={signOut}>
-                    <Button
-                        className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50"
-                        type="submit"
-                    >
-                        Sign out
-                    </Button>
-                </form>
-            </header>
-
-            <section className="py-10">
+            <section className="py-2">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="text-sm font-medium text-zinc-500">
                         {formatMonthLabel(dashboardData.month)}
@@ -92,7 +77,7 @@ export default async function PropertyPage({
                     />
                 </div>
                 <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-                    Monthl Rent and Utility Bills Summary
+                    Monthly Rent and Utility Bills Summary
                 </h1>
 
                 <p className="mt-2 text-zinc-600">

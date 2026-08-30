@@ -35,25 +35,9 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div className="mx-auto w-full max-w-5xl px-6 py-10">
+        <div className="mx-auto w-full min-w-0 max-w-5xl px-6 py-10">
 
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-6">
-                <div>
-                    <p className="text-sm text-zinc-500">Signed in as</p>
-                    <p className="font-medium">{user.email}</p>
-                </div>
-
-                <form action={signOut}>
-                    <Button
-                        className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50"
-                        type="submit"
-                    >
-                        Sign out
-                    </Button>
-                </form>
-            </div>
-
-            <section className="py-10">
+            <section className="py-2">
                 <h1 className="text-3xl font-semibold tracking-tight">Properties</h1>
                 <p className="mt-2 text-zinc-600">
                     Select a property to view its monthly rent and utility bills.
