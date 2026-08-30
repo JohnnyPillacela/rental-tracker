@@ -35,7 +35,14 @@ export function AppSidebar({ email, properties }: AppSidebarProps) {
     return (
         <Sidebar>
             <SidebarHeader>
-                <p className="px-2 text-lg font-medium">{PRODUCT_NAME}</p>
+                <Button
+                    nativeButton={false}
+                    variant="ghost"
+                    render={<Link href="/" />}
+                    className="h-auto justify-start px-2 text-lg font-medium"
+                >
+                    {PRODUCT_NAME}
+                </Button>
             </SidebarHeader>
 
             <SidebarContent>
