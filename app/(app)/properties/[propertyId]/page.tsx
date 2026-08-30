@@ -64,7 +64,7 @@ export default async function PropertyPage({
         dashboardData.utilityBills.length === 0;
 
     return (
-        <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
+        <div className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
             <header className="flex items-center justify-between border-b border-zinc-200 pb-6">
                 <div>
                     <p className="text-sm text-zinc-500">Signed in as</p>
@@ -115,6 +115,6 @@ export default async function PropertyPage({
                 }
 
             </section>
-        </main>
+        </div>
     );
 }
