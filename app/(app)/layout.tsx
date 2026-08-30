@@ -9,7 +9,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/features/shell/app-sidebar";
-import { getProperties, PropertyListItem } from "@/features/properties/queries";
+import { getProperties } from "@/features/properties/queries";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
     const supabase = await createClient();
@@ -30,7 +30,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 email={user.email ?? ""}
                 properties={properties}
             />
-            <SidebarInset>
+            <SidebarInset className="min-w-0">
                 <header className="flex h-12 items-center border-b px-4 md:hidden">
                     <SidebarTrigger />
                 </header>
