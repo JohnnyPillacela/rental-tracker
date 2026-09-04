@@ -31,15 +31,16 @@ export default async function Home() {
       <main className="flex-1">
         <section className="mx-auto max-w-3xl px-6 py-20 sm:py-28">
           <p className="text-sm text-muted-foreground">
-            Private landlords with more than one property. Also used by small
-            operators.
+            {PRODUCT_NAME} — rental management made simple.
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            See which units paid this month — across every building.
+            Property management built for independent landlords.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted-foreground">
-            Rent and utilities, by month, by property. Not a tenant app. Not a
-            full property-management suite.
+            {PRODUCT_NAME} helps small landlords understand exactly how each
+            rental is performing — rent, vacancies, utilities, expenses,
+            mortgage, and cash flow — without the complexity of traditional
+            property-management software.
           </p>
           <Button
             className="mt-8"
@@ -65,22 +66,19 @@ export default async function Home() {
         <section className="border-t border-border">
           <div className="mx-auto grid max-w-5xl gap-10 px-6 py-16 sm:grid-cols-2 sm:gap-16">
             <div>
-              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                For
-              </h2>
+              <h2 className="text-lg font-medium">A good fit</h2>
               <p className="mt-3 text-lg">
-                You already own more than one property — or you run a small shop
-                with a handful of buildings — and you need this month’s rent and
-                utilities in one place.
+                Independent landlords and solo operators who want a clear
+                picture of each property: what came in, what went out, and what
+                is left. Plenty of people start by house hacking — living in one
+                room and renting out the rest.
               </p>
             </div>
             <div>
-              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                Not for
-              </h2>
+              <h2 className="text-lg font-medium">Not a good fit</h2>
               <p className="mt-3 text-lg">
-                Tenants, a single house that only needs a lease template, or a
-                suite with screening, portals, and work orders.
+                Tenants, apartment complexes, or teams that need screening,
+                work-order portals, and a full property-management suite.
               </p>
             </div>
           </div>
@@ -90,21 +88,23 @@ export default async function Home() {
           <div className="mx-auto max-w-5xl px-6 py-16">
             <div className="grid gap-10 sm:grid-cols-3">
               <div>
-                <h2 className="text-lg font-medium">Pick a property</h2>
+                <h2 className="text-lg font-medium">See each property</h2>
                 <p className="mt-2 text-muted-foreground">
-                  Open a building from your list.
+                  Open a building and read rent, vacancies, and cash flow at a
+                  glance.
                 </p>
               </div>
               <div>
-                <h2 className="text-lg font-medium">Open the month</h2>
+                <h2 className="text-lg font-medium">Track the month</h2>
                 <p className="mt-2 text-muted-foreground">
-                  Move to this month or last month.
+                  Record what was paid, what is vacant, and what the bills were.
                 </p>
               </div>
               <div>
-                <h2 className="text-lg font-medium">Record rent and utilities</h2>
+                <h2 className="text-lg font-medium">Know the numbers</h2>
                 <p className="mt-2 text-muted-foreground">
-                  Mark what was paid and log the bills.
+                  Utilities, expenses, mortgage, and cash flow — without extra
+                  software.
                 </p>
               </div>
             </div>
