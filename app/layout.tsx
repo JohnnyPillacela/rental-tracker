@@ -18,7 +18,7 @@ const sourceCode = Source_Code_Pro({
 export const metadata: Metadata = {
   title: PRODUCT_NAME,
   description:
-    "See which units paid this month — rent and utilities across every property.",
+    "Property management built for independent landlords. See how each rental is performing — rent, vacancies, utilities, expenses, mortgage, and cash flow.",
 };
 
 export default function RootLayout({
