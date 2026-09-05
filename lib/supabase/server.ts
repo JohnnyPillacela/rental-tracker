@@ -25,32 +25,32 @@ function getSupabaseConfig() {
 }
 
 export async function createClient() {
-    const cookieStore = await cookies();
-    const { url, publishableKey } = getSupabaseConfig();
+  const cookieStore = await cookies();
+  const { url, publishableKey } = getSupabaseConfig();
 
-    return createServerClient<Database>(url, publishableKey, {
-        cookies: {
-            getAll() {
-                return cookieStore.getAll();
-            },
+  return createServerClient<Database>(url, publishableKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
 
-            setAll(cookiesToSet) {
-                try {
-                    for (const { name, value, options } of cookiesToSet) {
-                        cookieStore.set(name, value, options);
-                    }
-                } catch {
-                    /*
-                    * Server Components cannot write cookies during rendering.
-                    * This is acceptable during the connection-only phase because
-                    * authentication and session refresh are not implemented yet.
-                    *
-                    * Before adding authentication, add Next.js Proxy-based session
-                    * refresh so updated auth cookies are written to the response.
-                    */
-                }
-            }
+      setAll(cookiesToSet) {
+        try {
+          for (const { name, value, options } of cookiesToSet) {
+            cookieStore.set(name, value, options);
+          }
+        } catch {
+          /*
+          * Server Components cannot write cookies during rendering.
+          * This is acceptable during the connection-only phase because
+          * authentication and session refresh are not implemented yet.
+          *
+          * Before adding authentication, add Next.js Proxy-based session
+          * refresh so updated auth cookies are written to the response.
+          */
         }
-    })
+      }
+    }
+  })
 
 }
