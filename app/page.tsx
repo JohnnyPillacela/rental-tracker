@@ -2,14 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { getOptionalUser } from "@/lib/supabase/server";
-import { PRODUCT_NAME, CONTACT_EMAIL } from "@/lib/brand";
+import { PRODUCT_NAME } from "@/lib/brand";
 import Link from "next/link";
 
 export default async function Home() {
   const user = await getOptionalUser();
 
-  const ctaHref = user ? "/dashboard" : "/login";
-  const ctaLabel = user ? "Dashboard" : "Sign in";
+  const headerHref = user ? "/dashboard" : "/login";
+  const headerLabel = user ? "Dashboard" : "Log in";
+  const primaryHref = user ? "/dashboard" : "/signup";
+  const primaryLabel = user ? "Dashboard" : "Create account";
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-background text-foreground">
@@ -18,8 +20,12 @@ export default async function Home() {
           <Link href="/" className="text-lg font-medium tracking-tight">
             {PRODUCT_NAME}
           </Link>
-          <Button nativeButton={false} render={<Link href={ctaHref} />} size="sm">
-            {ctaLabel}
+          <Button
+            nativeButton={false}
+            render={<Link href={headerHref} />}
+            size="sm"
+          >
+            {headerLabel}
           </Button>
         </div>
       </header>
@@ -41,21 +47,24 @@ export default async function Home() {
           <Button
             className="mt-8"
             nativeButton={false}
-            render={<Link href={ctaHref} />}
+            render={<Link href={primaryHref} />}
             size="lg"
           >
-            {ctaLabel}
+            {primaryLabel}
           </Button>
+          {!user ? (
+            <p className="mt-3 text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link
+                className="font-medium text-foreground underline underline-offset-4"
+                href="/login"
+              >
+                Log in
+              </Link>
+            </p>
+          ) : null}
           <p className="mt-4 max-w-md text-sm text-muted-foreground">
-            Still in beta. The first 10 accounts are free for life. Access is
-            not self-serve — email{" "}
-            <a
-              className="underline underline-offset-4"
-              href={`mailto:${CONTACT_EMAIL}`}
-            >
-              {CONTACT_EMAIL}
-            </a>{" "}
-            for an account.
+            Still in beta. The first 10 accounts are free for life.
           </p>
         </section>
 
@@ -107,10 +116,10 @@ export default async function Home() {
             <Button
               className="mt-12"
               nativeButton={false}
-              render={<Link href={ctaHref} />}
+              render={<Link href={primaryHref} />}
               size="lg"
             >
-              {ctaLabel}
+              {primaryLabel}
             </Button>
           </div>
         </section>

@@ -2,7 +2,10 @@
 
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import {
+    createClient,
+    throwIfSupabaseUnavailable,
+} from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 type SignUpState =
@@ -30,6 +33,34 @@ export async function signUp(
         // TODO: When email confirmation is enabled, send users through
         // the confirmation callback/token-exchange flow here.
         return { ok: false, error: "Check your email to finish creating your account." };
+    }
+
+    redirect("/dashboard");
+}
+
+export async function signIn(formData: FormData) {
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    if (
+        typeof email !== "string" ||
+        typeof password !== "string" ||
+        !email.trim() ||
+        !password
+    ) {
+        redirect("/login?error=missing-fields");
+    }
+
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+    });
+
+    if (error) {
+        throwIfSupabaseUnavailable(error);
+        console.error("Supabase sign-in failed: ", error.message);
+        redirect("/login?error=invalid-credentials");
     }
 
     redirect("/dashboard");
