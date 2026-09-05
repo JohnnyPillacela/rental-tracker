@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, requireUser } from "@/lib/supabase/server";
 import {
     SidebarInset,
     SidebarProvider,
@@ -12,16 +12,7 @@ import { AppSidebar } from "@/features/shell/app-sidebar";
 import { getProperties } from "@/features/properties/queries";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-    const supabase = await createClient();
-    const user = await supabase.auth
-        .getUser()
-        .then(({ data, error }) => (error ? null : data.user))
-        .catch(() => redirect("/login?error=db-error"));
-
-    if (!user) {
-        redirect("/login?error=unauthorized");
-    }
-
+    const user = await requireUser();
     const properties = await getProperties();
 
     return (

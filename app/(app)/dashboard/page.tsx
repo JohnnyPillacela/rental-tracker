@@ -1,38 +1,19 @@
 // app/(app)/dashboard/page.tsx
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
+import { requireUser } from "@/lib/supabase/server";
 import {
     Card,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { getProperties, PropertyListItem } from "@/features/properties/queries";
+import { getProperties, type PropertyListItem } from "@/features/properties/queries";
 
-const properties = await getProperties()
-
-async function signOut() {
-    "use server";
-
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-
-    redirect("/");
-}
 
 export default async function DashboardPage() {
-    const supabase = await createClient();
-    const user = await supabase.auth
-        .getUser()
-        .then(({ data, error }) => (error ? null : data.user))
-        .catch(() => redirect("/login?error=db-error"));
-
-    if (!user) {
-        redirect("/login?error=unauthorized");
-    }
+    await requireUser();
+    const properties = await getProperties()
 
     return (
         <div className="mx-auto w-full min-w-0 max-w-5xl px-6 py-10">

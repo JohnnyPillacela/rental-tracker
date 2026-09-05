@@ -3,7 +3,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getUserResult } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/database.types";
 
 type RentStatus = Database["public"]["Enums"]["rent_status"];
@@ -55,15 +55,17 @@ export async function updateRentRecord(
         return { ok: false, error: "Invalid status." };
     }
 
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const userResult = await getUserResult();
 
-    if (!user) {
+    if (!userResult.ok) {
+        return { ok: false, error: "Service temporarily unavailable. Try again." };
+    }
+
+    if (!userResult.data) {
         return { ok: false, error: "You must be signed in." };
     }
 
+    const supabase = await createClient();
     const { error } = await supabase
         .from("monthly_rent_records")
         .update({

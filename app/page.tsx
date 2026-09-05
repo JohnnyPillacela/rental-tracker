@@ -1,16 +1,12 @@
 // page.tsx
 
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { getOptionalUser } from "@/lib/supabase/server";
 import { PRODUCT_NAME, CONTACT_EMAIL } from "@/lib/brand";
 import Link from "next/link";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const user = await supabase.auth
-    .getUser()
-    .then(({ data, error }) => (error ? null : data.user))
-    .catch(() => null);
+  const user = await getOptionalUser();
 
   const ctaHref = user ? "/dashboard" : "/login";
   const ctaLabel = user ? "Dashboard" : "Sign in";

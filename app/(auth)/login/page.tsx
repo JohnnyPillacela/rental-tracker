@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getOptionalUser, throwIfSupabaseUnavailable } from "@/lib/supabase/server";
 import { PRODUCT_NAME } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +42,7 @@ async function signIn(formData: FormData) {
     });
 
     if (error) {
+        throwIfSupabaseUnavailable(error);
         console.error("Supabase sign-in failed: ", error.message);
         redirect("/login?error=invalid-credentials");
     }
@@ -50,11 +51,7 @@ async function signIn(formData: FormData) {
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getOptionalUser();
 
     if (user) {
         redirect("/dashboard");

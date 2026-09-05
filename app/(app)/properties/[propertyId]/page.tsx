@@ -1,9 +1,8 @@
 // app/(app)/properties/[propertyId]/page.tsx
 
-import { notFound, redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
 import { getDashboardData } from "@/features/properties/queries";
-import { Button } from "@/components/ui/button";
+import { requireUser } from "@/lib/supabase/server";
 import { SummaryCards } from "@/features/properties/components/summary-cards";
 import { RentRecordsTable } from "@/features/properties/components/rent-records-table";
 import { UtilityBillsTable } from "@/features/properties/components/utility-bills-table";
@@ -21,28 +20,11 @@ type PropertyPageProps = {
     }>;
 };
 
-async function signOut() {
-    "use server";
-
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-
-    redirect("/");
-}
-
 export default async function PropertyPage({
     params,
     searchParams,
 }: PropertyPageProps) {
-    const supabase = await createClient();
-    const user = await supabase.auth
-        .getUser()
-        .then(({ data, error }) => (error ? null : data.user))
-        .catch(() => redirect("/login?error=db-error"));
-
-    if (!user) {
-        redirect("/login?error=unauthorized");
-    }
+    await requireUser();
 
     const { propertyId: propertyIdParam } = await params;
     const propertyId = Number(propertyIdParam);
