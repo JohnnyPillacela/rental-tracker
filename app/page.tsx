@@ -64,7 +64,7 @@ export default async function Home() {
             </p>
           ) : null}
           <p className="mt-4 max-w-md text-sm text-muted-foreground">
-            Still in beta. The first 10 accounts are free for life.
+            Still in beta.
           </p>
         </section>
 
