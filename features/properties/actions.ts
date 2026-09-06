@@ -25,6 +25,11 @@ export type UpdateUtilityBillState =
     | { ok: false; error: string }
     | null;
 
+export type AddPropertyState =
+    | { ok: true }
+    | { ok: false; error: string }
+    | null;
+
 type UtilityBillUpdate = {
     id: number;
     amount: number;
@@ -146,5 +151,67 @@ export async function updateUtilityBills(
     }
 
     revalidatePath("/properties/[propertyId]", "page");
+    return { ok: true };
+}
+
+export async function addProperty(
+    _prev: AddPropertyState,
+    formData: FormData,): Promise<AddPropertyState> {
+    const nickname = formData.get("nickname")?.toString().trim() ?? "";
+    const street_address = formData.get("address")?.toString().trim() ?? "";
+    const city = formData.get("city")?.toString().trim() ?? "";
+    const state = formData.get("state")?.toString().trim() ?? "";
+    const zip_code = formData.get("zip")?.toString().trim() ?? "";
+    const unitCount = Number(formData.get("unit_count"));
+
+    if (!nickname || !street_address || !city || !state || !zip_code) {
+        return { ok: false, error: "All address fields are required." };
+    }
+    if (!Number.isInteger(unitCount) || unitCount < 1 || unitCount > 10) {
+        return { ok: false, error: "Enter between 1 and 10 apartments." };
+    }
+
+    const userResult = await getUserResult();
+
+    if (!userResult.ok) {
+        return { ok: false, error: "Service temporarily unavailable. Try again." };
+    }
+    if (!userResult.data) {
+        return { ok: false, error: "You must be signed in." };
+    }
+
+    const supabase = await createClient();
+    const { data: property, error: propertyError } = await supabase
+        .from("properties")
+        .insert({
+            nickname,
+            street_address,
+            city,
+            state,
+            zip_code,
+        })
+        .select("id")
+        .single();
+
+    if (propertyError) {
+        console.error("Failed to add property:", propertyError.message);
+        return { ok: false, error: "Could not add property." };
+    }
+
+    const { error: unitsError } = await supabase.from("units").insert(
+        Array.from({ length: unitCount }, (_, i) => ({
+            property_id: property.id,
+            name: `Unit ${i + 1}`,
+            display_order: i + 1,
+        })),
+    );
+
+    if (unitsError) {
+        console.error("Failed to add units:", unitsError.message);
+        await supabase.from("properties").delete().eq("id", property.id);
+        return { ok: false, error: "Could not add property." };
+    }
+
+    revalidatePath("/dashboard", "layout");
     return { ok: true };
 }

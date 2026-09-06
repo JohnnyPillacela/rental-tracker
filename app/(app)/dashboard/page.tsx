@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { getProperties, type PropertyListItem } from "@/features/properties/queries";
-
+import { AddPropertyDialog } from "@/features/properties/components/add-property-form";
 
 export default async function DashboardPage() {
     await requireUser();
@@ -23,6 +23,10 @@ export default async function DashboardPage() {
                 <p className="mt-2 text-zinc-600">
                     Select a property to view its monthly rent and utility bills.
                 </p>
+
+                <div className="mt-8 flex justify-start">
+                    <AddPropertyDialog />
+                </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                     {properties.length === 0 ? (
