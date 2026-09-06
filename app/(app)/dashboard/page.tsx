@@ -28,11 +28,11 @@ export default async function DashboardPage() {
                     <AddPropertyDialog />
                 </div>
 
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <div className="mt-8">
                     {properties.length === 0 ? (
                         <p className="mt-8 text-zinc-600">No properties yet.</p>
                     ) : (
-                        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                        <div className="mt-8 grid gap-4 md:grid-cols-4 sm:grid-cols-2">
                             {properties.map((property) => (
                                 <Link key={property.id} href={`/properties/${property.id}`}>
                                     <Card className="hover:bg-zinc-50">
