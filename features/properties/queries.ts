@@ -176,4 +176,20 @@ export const getProperties = cache(async () => {
   return data;
 });
 
+export const getProperty = cache(async (propertyId: number) => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("properties")
+    .select("id, nickname, street_address, city, state, zip_code, purchase_price, status")
+    .eq("id", propertyId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Failed to load property:", error.message);
+    throw new Error("Property could not be loaded.");
+  }
+  return data;
+});
+
 export type PropertyListItem = Awaited<ReturnType<typeof getProperties>>[number];
