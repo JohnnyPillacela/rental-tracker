@@ -69,7 +69,7 @@ export function AppSidebar({ email, properties }: AppSidebarProps) {
                             {properties.map((property) => (
                                 <SidebarMenuItem key={property.id}>
                                     <SidebarMenuButton
-                                        isActive={pathname === `/properties/${property.id}`}
+                                        isActive={pathname === `/properties/${property.id}` || pathname.startsWith(`/properties/${property.id}/`)}
                                         render={<Link href={`/properties/${property.id}`} />}
                                     >
                                         {property.nickname}
@@ -82,9 +82,9 @@ export function AppSidebar({ email, properties }: AppSidebarProps) {
             </SidebarContent>
 
             <SidebarFooter>
-                <p className="truncate px-2 text-sm text-muted-foreground">{email}</p>
+                <p className="truncate px-2 text-md">{email}</p>
                 <form action={signOut}>
-                    <Button type="submit" variant="outline" size="sm" className="w-full">
+                    <Button type="submit" variant="secondary" size="sm" className="w-full">
                         Sign out
                     </Button>
                 </form>

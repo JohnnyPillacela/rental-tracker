@@ -21,7 +21,7 @@ export default async function DashboardPage() {
             <section className="py-2">
                 <h1 className="text-3xl font-semibold tracking-tight">Properties</h1>
                 <p className="mt-2 text-zinc-600">
-                    Select a property to view its monthly rent and utility bills.
+                    Select a property to view performance metrics and further details.
                 </p>
 
                 <div className="mt-8 flex justify-start">

@@ -5,6 +5,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient, getUserResult } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/database.types";
+import { redirect } from "next/navigation";
 
 type RentStatus = Database["public"]["Enums"]["rent_status"];
 
@@ -84,7 +85,7 @@ export async function updateRentRecord(
         return { ok: false, error: "Could not save rent record." };
     }
 
-    revalidatePath("/properties/[propertyId]", "page");
+    revalidatePath("/properties/[propertyId]/view", "page");
     return { ok: true };
 }
 
@@ -150,7 +151,7 @@ export async function updateUtilityBills(
         }
     }
 
-    revalidatePath("/properties/[propertyId]", "page");
+    revalidatePath("/properties/[propertyId]/view", "page");
     return { ok: true };
 }
 
@@ -213,5 +214,5 @@ export async function addProperty(
     }
 
     revalidatePath("/dashboard", "layout");
-    return { ok: true };
+    redirect(`/properties/${property.id}`);
 }

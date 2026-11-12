@@ -12,9 +12,7 @@ export function MonthNav({ month, propertyId }: MonthNavProps) {
   const prevMonth = shiftMonth(month, -1);
   const nextMonth = shiftMonth(month, 1);
   const hrefFor = (targetMonth: string) =>
-    propertyId !== undefined
-      ? `/properties/${propertyId}?month=${targetMonth}`
-      : `/dashboard?month=${targetMonth}`;
+    `/properties/${propertyId}/view?month=${targetMonth}`;
 
   const linkClassName =
     "rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50";
